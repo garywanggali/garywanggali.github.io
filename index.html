@@ -50,26 +50,26 @@
             'Montana': 'montana_flag.png',
             'Nebraska': 'nebraska_flag.png',
             'Nevada': 'nevada_flag.png',
-            'NewHampshire': 'new_hampshire_flag.png',
-            'NewJersey': 'new_jersey_flag.png',
-            'NewMexico': 'new_mexico_flag.png',
-            'NewYork': 'new_york_flag.png',
-            'NorthCarolina': 'north_carolina_flag.png',
-            'NorthDakota': 'north_dakota_flag.png',
+            'New Hampshire': 'new_hampshire_flag.png',
+            'New Jersey': 'new_jersey_flag.png',
+            'New Mexico': 'new_mexico_flag.png',
+            'New York': 'new_york_flag.png',
+            'North Carolina': 'north_carolina_flag.png',
+            'North Dakota': 'north_dakota_flag.png',
             'Ohio': 'ohio_flag.png',
             'Oklahoma': 'oklahoma_flag.png',
             'Oregon': 'oregon_flag.png',
             'Pennsylvania': 'pennsylvania_flag.png',
-            'RhodeIsland': 'rhode_island_flag.png',
-            'SouthCarolina': 'south_carolina_flag.png',
-            'SouthDakota': 'south_dakota_flag.png',
+            'Rhode Island': 'rhode_island_flag.png',
+            'South Carolina': 'south_carolina_flag.png',
+            'South Dakota': 'south_dakota_flag.png',
             'Tennessee': 'tennessee_flag.png',
             'Texas': 'texas_flag.png',
             'Utah': 'utah_flag.png',
             'Vermont': 'vermont_flag.png',
             'Virginia': 'virginia_flag.png',
             'Washington': 'washington_flag.png',
-            'WestVirginia': 'west_virginia_flag.png',
+            'West Virginia': 'west_virginia_flag.png',
             'Wisconsin': 'wisconsin_flag.png',
             'Wyoming': 'wyoming_flag.png'
         };
@@ -86,15 +86,15 @@
                 L.geoJSON(data, {
                     onEachFeature: function (feature, layer) {
                         layer.on('click', function () {
-                            const adminName = feature.properties.NAME_1.replace(/\s/g, '');
-                            let popupContent = '';
+                            const adminName = feature.properties.NAME_1;
                             const filename = stateFlags[adminName];
+                            let popupContent = '';
                             if (filename) {
-                                const flagUrl = 'flags/' + filename;
-                                popupContent = `<b>${feature.properties.NAME_1}:</b><br>
-                                    <div class="flag-popup"><img src="${flagUrl}"></div>`;
+                                const flagUrl = filename; // 文件与 HTML 同目录
+                                popupContent = `<b>${adminName}:</b><br>
+                                    <div class="flag-popup"><img src="${flagUrl}" alt="Flag of ${adminName}"></div>`;
                             } else {
-                                popupContent = 'No flag available for ' + feature.properties.NAME_1;
+                                popupContent = `No flag available for ${adminName}`;
                             }
                             layer.bindPopup(popupContent).openPopup();
                         });
@@ -104,3 +104,4 @@
     </script>
 </body>
 </html>
+
