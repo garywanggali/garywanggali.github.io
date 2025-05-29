@@ -1,1 +1,106 @@
-Halo
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>World Map with State Flags</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 500px;
+            width: 100%;
+        }
+        .flag-popup img {
+            max-width: 100px;
+            max-height: 70px;
+        }
+    </style>
+</head>
+<body>
+    <h1>World Map with State Flags</h1>
+    <div id="map"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        const stateFlags = {
+            'Alabama': 'alabama_flag.png',
+            'Alaska': 'alaska_flag.png',
+            'Arizona': 'arizona_flag.png',
+            'Arkansas': 'arkansas_flag.png',
+            'California': 'california_flag.png',
+            'Colorado': 'colorado_flag.png',
+            'Connecticut': 'connecticut_flag.png',
+            'Delaware': 'delaware_flag.png',
+            'Florida': 'florida_flag.png',
+            'Georgia': 'georgia_flag.png',
+            'Hawaii': 'hawaii_flag.png',
+            'Idaho': 'idaho_flag.png',
+            'Illinois': 'illinois_flag.png',
+            'Indiana': 'indiana_flag.png',
+            'Iowa': 'iowa_flag.png',
+            'Kansas': 'kansas_flag.png',
+            'Kentucky': 'kentucky_flag.png',
+            'Louisiana': 'louisiana_flag.png',
+            'Maine': 'maine_flag.png',
+            'Maryland': 'maryland_flag.png',
+            'Massachusetts': 'massachusetts_flag.png',
+            'Michigan': 'michigan_flag.png',
+            'Minnesota': 'minnesota_flag.png',
+            'Mississippi': 'mississippi_flag.png',
+            'Missouri': 'missouri_flag.png',
+            'Montana': 'montana_flag.png',
+            'Nebraska': 'nebraska_flag.png',
+            'Nevada': 'nevada_flag.png',
+            'NewHampshire': 'new_hampshire_flag.png',
+            'NewJersey': 'new_jersey_flag.png',
+            'NewMexico': 'new_mexico_flag.png',
+            'NewYork': 'new_york_flag.png',
+            'NorthCarolina': 'north_carolina_flag.png',
+            'NorthDakota': 'north_dakota_flag.png',
+            'Ohio': 'ohio_flag.png',
+            'Oklahoma': 'oklahoma_flag.png',
+            'Oregon': 'oregon_flag.png',
+            'Pennsylvania': 'pennsylvania_flag.png',
+            'RhodeIsland': 'rhode_island_flag.png',
+            'SouthCarolina': 'south_carolina_flag.png',
+            'SouthDakota': 'south_dakota_flag.png',
+            'Tennessee': 'tennessee_flag.png',
+            'Texas': 'texas_flag.png',
+            'Utah': 'utah_flag.png',
+            'Vermont': 'vermont_flag.png',
+            'Virginia': 'virginia_flag.png',
+            'Washington': 'washington_flag.png',
+            'WestVirginia': 'west_virginia_flag.png',
+            'Wisconsin': 'wisconsin_flag.png',
+            'Wyoming': 'wyoming_flag.png'
+        };
+
+        const map = L.map('map').setView([37, -96], 4);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        fetch('usa_states.geojson')
+            .then(response => response.json())
+            .then(data => {
+                L.geoJSON(data, {
+                    onEachFeature: function (feature, layer) {
+                        layer.on('click', function () {
+                            const adminName = feature.properties.NAME_1.replace(/\s/g, '');
+                            let popupContent = '';
+                            const filename = stateFlags[adminName];
+                            if (filename) {
+                                const flagUrl = 'flags/' + filename;
+                                popupContent = `<b>${feature.properties.NAME_1}:</b><br>
+                                    <div class="flag-popup"><img src="${flagUrl}"></div>`;
+                            } else {
+                                popupContent = 'No flag available for ' + feature.properties.NAME_1;
+                            }
+                            layer.bindPopup(popupContent).openPopup();
+                        });
+                    }
+                }).addTo(map);
+            });
+    </script>
+</body>
+</html>
