@@ -21,6 +21,9 @@
 
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
+        const manualCenters = {
+            'Alaska':[61.2181, -149.9003],
+        }
         const stateFlags = {
             'Alabama': 'alabama_flag.png',
             'Alaska': 'alaska_flag.png',
@@ -50,26 +53,26 @@
             'Montana': 'montana_flag.png',
             'Nebraska': 'nebraska_flag.png',
             'Nevada': 'nevada_flag.png',
-            'NewHampshire': 'new_hampshire_flag.png',
-            'NewJersey': 'new_jersey_flag.png',
-            'NewMexico': 'new_mexico_flag.png',
-            'NewYork': 'new_york_flag.png',
-            'NorthCarolina': 'north_carolina_flag.png',
-            'NorthDakota': 'north_dakota_flag.png',
+            'New Hampshire': 'new_hampshire_flag.png',
+            'New Jersey': 'new_jersey_flag.png',
+            'New Mexico': 'new_mexico_flag.png',
+            'New York': 'new_york_flag.png',
+            'North Carolina': 'north_carolina_flag.png',
+            'North Dakota': 'north_dakota_flag.png',
             'Ohio': 'ohio_flag.png',
             'Oklahoma': 'oklahoma_flag.png',
             'Oregon': 'oregon_flag.png',
             'Pennsylvania': 'pennsylvania_flag.png',
-            'RhodeIsland': 'rhode_island_flag.png',
-            'SouthCarolina': 'south_carolina_flag.png',
-            'SouthDakota': 'south_dakota_flag.png',
+            'Rhode Island': 'rhode_island_flag.png',
+            'South Carolina': 'south_carolina_flag.png',
+            'South Dakota': 'south_dakota_flag.png',
             'Tennessee': 'tennessee_flag.png',
             'Texas': 'texas_flag.png',
             'Utah': 'utah_flag.png',
             'Vermont': 'vermont_flag.png',
             'Virginia': 'virginia_flag.png',
             'Washington': 'washington_flag.png',
-            'WestVirginia': 'west_virginia_flag.png',
+            'West Virginia': 'west_virginia_flag.png',
             'Wisconsin': 'wisconsin_flag.png',
             'Wyoming': 'wyoming_flag.png'
         };
@@ -81,27 +84,32 @@
         }).addTo(map);
 
         fetch('usa_states.geojson')
-            .then(response => response.json())
-            .then(data => {
-                L.geoJSON(data, {
-                onEachFeature: function(feature, layer) {
-                    const stateName = feature.properties.NAME_1;
-                    const flagFile = stateFlags[stateName];
+        .then(response => response.json())
+        .then(data => {
+            L.geoJSON(data, {
+            onEachFeature: function(feature, layer) {
+                const stateName = feature.properties.NAME_1;
+                const flagFile = stateFlags[stateName];
 
-                    // 计算几何中心点
-                    const center = layer.getBounds().getCenter();
-
-                    if (flagFile) {
-                    const icon = L.icon({
-                        iconUrl: flagFile,
-                        iconSize: [40, 28],
-                        iconAnchor: [20, 14],
-                    });
-                    L.marker(center, { icon }).addTo(map);
-                    }
+                // 优先用手写中心点
+                let center = manualCenters[stateName];
+                if (!center) {
+                center = layer.getBounds().getCenter();
                 }
-                }).addTo(map);
-            });
+
+                if (flagFile) {
+                const icon = L.icon({
+                    iconUrl: flagFile,
+                    iconSize: [40, 28],
+                    iconAnchor: [20, 14]
+                });
+                L.marker(center, { icon }).addTo(map);
+                }
+            }
+            }).addTo(map);
+        });
+
+
 
     </script>
 </body>
