@@ -84,23 +84,25 @@
             .then(response => response.json())
             .then(data => {
                 L.geoJSON(data, {
-                    onEachFeature: function (feature, layer) {
-                        layer.on('click', function () {
-                            const adminName = feature.properties.NAME_1;
-                            const filename = stateFlags[adminName];
-                            let popupContent = '';
-                            if (filename) {
-                                const flagUrl = filename; // 文件与 HTML 同目录
-                                popupContent = `<b>${adminName}:</b><br>
-                                    <div class="flag-popup"><img src="${flagUrl}" alt="Flag of ${adminName}"></div>`;
-                            } else {
-                                popupContent = `No flag available for ${adminName}`;
-                            }
-                            layer.bindPopup(popupContent).openPopup();
-                        });
+                onEachFeature: function(feature, layer) {
+                    const stateName = feature.properties.NAME_1;
+                    const flagFile = stateFlags[stateName];
+
+                    // 计算几何中心点
+                    const center = layer.getBounds().getCenter();
+
+                    if (flagFile) {
+                    const icon = L.icon({
+                        iconUrl: flagFile,
+                        iconSize: [40, 28],
+                        iconAnchor: [20, 14],
+                    });
+                    L.marker(center, { icon }).addTo(map);
                     }
+                }
                 }).addTo(map);
             });
+
     </script>
 </body>
 </html>
