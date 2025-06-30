@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <title>World Map with State Flags</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css"
+    />
     <style>
         #map {
             height: 500px;
@@ -22,114 +25,121 @@
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
         const manualCenters = {
-            'Alaska': [66.2181, -149.9003],
-            'Hawaii': [20.7967, -156.3319],
-            'Nevada': [38.8135, -117.0554],
-            'NorthCarolina': [35.7301, -79.6064],
-            'Idaho': [43.7405, -114.4788]
+            Alaska: [66.2181, -149.9003],
+            Hawaii: [20.7967, -156.3319],
+            Nevada: [38.8135, -117.0554],
+            NorthCarolina: [35.7301, -79.6064],
+            Idaho: [43.7405, -114.4788],
+            // 马来西亚如果有特别中心点可加
         };
 
         const stateFlags = {
-            // USA States
-            'Alabama': 'alabama_flag.png',
-            'Alaska': 'alaska_flag.png',
-            'Arizona': 'arizona_flag.png',
-            'Arkansas': 'arkansas_flag.png',
-            'California': 'california_flag.png',
-            'Colorado': 'colorado_flag.png',
-            'Connecticut': 'connecticut_flag.png',
-            'Delaware': 'delaware_flag.png',
-            'Florida': 'florida_flag.png',
-            'Georgia': 'georgia_flag.png',
-            'Hawaii': 'hawaii_flag.png',
-            'Idaho': 'idaho_flag.png',
-            'Illinois': 'illinois_flag.png',
-            'Indiana': 'indiana_flag.png',
-            'Iowa': 'iowa_flag.png',
-            'Kansas': 'kansas_flag.png',
-            'Kentucky': 'kentucky_flag.png',
-            'Louisiana': 'louisiana_flag.png',
-            'Maine': 'maine_flag.png',
-            'Maryland': 'maryland_flag.png',
-            'Massachusetts': 'massachusetts_flag.png',
-            'Michigan': 'michigan_flag.png',
-            'Minnesota': 'minnesota_flag.png',
-            'Mississippi': 'mississippi_flag.png',
-            'Missouri': 'missouri_flag.png',
-            'Montana': 'montana_flag.png',
-            'Nebraska': 'nebraska_flag.png',
-            'Nevada': 'nevada_flag.png',
-            'NewHampshire': 'new_hampshire_flag.png',
-            'NewJersey': 'new_jersey_flag.png',
-            'NewMexico': 'new_mexico_flag.png',
-            'NewYork': 'new_york_flag.png',
-            'NorthCarolina': 'north_carolina_flag.png',
-            'NorthDakota': 'north_dakota_flag.png',
-            'Ohio': 'ohio_flag.png',
-            'Oklahoma': 'oklahoma_flag.png',
-            'Oregon': 'oregon_flag.png',
-            'Pennsylvania': 'pennsylvania_flag.png',
-            'RhodeIsland': 'rhode_island_flag.png',
-            'SouthCarolina': 'south_carolina_flag.png',
-            'SouthDakota': 'south_dakota_flag.png',
-            'Tennessee': 'tennessee_flag.png',
-            'Texas': 'texas_flag.png',
-            'Utah': 'utah_flag.png',
-            'Vermont': 'vermont_flag.png',
-            'Virginia': 'virginia_flag.png',
-            'Washington': 'washington_flag.png',
-            'WestVirginia': 'west_virginia_flag.png',
-            'Wisconsin': 'wisconsin_flag.png',
-            'Wyoming': 'wyoming_flag.png',
-            // Malaysia States (example, you can add more)
-            'Johor': 'johor_flag.png',
-            'Kedah': 'kedah_flag.png',
-            'Kelantan': 'kelantan_flag.png',
-            'Malacca': 'malacca_flag.png'
+            // 美国州旗
+            Alabama: "alabama_flag.png",
+            Alaska: "alaska_flag.png",
+            Arizona: "arizona_flag.png",
+            Arkansas: "arkansas_flag.png",
+            California: "california_flag.png",
+            Colorado: "colorado_flag.png",
+            Connecticut: "connecticut_flag.png",
+            Delaware: "delaware_flag.png",
+            Florida: "florida_flag.png",
+            Georgia: "georgia_flag.png",
+            Hawaii: "hawaii_flag.png",
+            Idaho: "idaho_flag.png",
+            Illinois: "illinois_flag.png",
+            Indiana: "indiana_flag.png",
+            Iowa: "iowa_flag.png",
+            Kansas: "kansas_flag.png",
+            Kentucky: "kentucky_flag.png",
+            Louisiana: "louisiana_flag.png",
+            Maine: "maine_flag.png",
+            Maryland: "maryland_flag.png",
+            Massachusetts: "massachusetts_flag.png",
+            Michigan: "michigan_flag.png",
+            Minnesota: "minnesota_flag.png",
+            Mississippi: "mississippi_flag.png",
+            Missouri: "missouri_flag.png",
+            Montana: "montana_flag.png",
+            Nebraska: "nebraska_flag.png",
+            Nevada: "nevada_flag.png",
+            NewHampshire: "new_hampshire_flag.png",
+            NewJersey: "new_jersey_flag.png",
+            NewMexico: "new_mexico_flag.png",
+            NewYork: "new_york_flag.png",
+            NorthCarolina: "north_carolina_flag.png",
+            NorthDakota: "north_dakota_flag.png",
+            Ohio: "ohio_flag.png",
+            Oklahoma: "oklahoma_flag.png",
+            Oregon: "oregon_flag.png",
+            Pennsylvania: "pennsylvania_flag.png",
+            RhodeIsland: "rhode_island_flag.png",
+            SouthCarolina: "south_carolina_flag.png",
+            SouthDakota: "south_dakota_flag.png",
+            Tennessee: "tennessee_flag.png",
+            Texas: "texas_flag.png",
+            Utah: "utah_flag.png",
+            Vermont: "vermont_flag.png",
+            Virginia: "virginia_flag.png",
+            Washington: "washington_flag.png",
+            WestVirginia: "west_virginia_flag.png",
+            Wisconsin: "wisconsin_flag.png",
+            Wyoming: "wyoming_flag.png",
+            // 马来西亚州旗
+            Johor: "johor_flag.png",
+            Kedah: "kedah_flag.png",
+            Kelantan: "kelantan_flag.png",
+            Malacca: "malacca_flag.png",
         };
 
-        const map = L.map('map').setView([20, 0], 2);  // 世界视角
+        const map = L.map("map").setView([20, 0], 2);
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; OpenStreetMap contributors'
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution: "&copy; OpenStreetMap contributors",
         }).addTo(map);
 
         const markers = [];
 
         function createFlagIcon(url, size) {
             return L.divIcon({
-                className: 'flag-marker',
+                className: "flag-marker",
                 html: `<img src="${url}" style="width:${size}px; height:${size * 0.7}px;">`,
                 iconSize: [size, size * 0.7],
-                iconAnchor: [size / 2, (size * 0.7) / 2]
+                iconAnchor: [size / 2, (size * 0.7) / 2],
             });
         }
 
-        function loadGeoJSON(filename) {
+        // 传入参数说明country用来区分GeoJSON字段名不同
+        function loadGeoJSON(filename, country) {
             fetch(filename)
-                .then(response => response.json())
-                .then(data => {
+                .then((response) => response.json())
+                .then((data) => {
                     L.geoJSON(data, {
-                        onEachFeature: function(feature, layer) {
-                            const stateName = feature.properties.name;
+                        onEachFeature: function (feature, layer) {
+                            let stateName;
+                            if (country === "USA") {
+                                stateName = feature.properties.NAME_1;
+                            } else if (country === "Malaysia") {
+                                stateName = feature.properties.name;
+                            }
+
                             const flagFile = stateFlags[stateName];
-                            let center = manualCenters[stateName] || layer.getBounds().getCenter();
+                            const center =
+                                manualCenters[stateName] || layer.getBounds().getCenter();
 
                             if (flagFile) {
                                 const icon = createFlagIcon(flagFile, 40);
                                 const marker = L.marker(center, { icon }).addTo(map);
                                 markers.push({ marker, flagFile, center });
                             }
-                        }
+                        },
                     }).addTo(map);
-
                     updateIconSizes();
                 });
         }
 
-        // 加载美国和马来西亚的地图
-        loadGeoJSON('usa_states.geojson');
-        loadGeoJSON('malaysia_states.geojson');
+        loadGeoJSON("usa_states.geojson", "USA");
+        loadGeoJSON("malaysia_states.geojson", "Malaysia");
 
         function updateIconSizes() {
             const zoom = map.getZoom();
@@ -143,7 +153,7 @@
             });
         }
 
-        map.on('zoomend', updateIconSizes);
+        map.on("zoomend", updateIconSizes);
     </script>
 </body>
 </html>
