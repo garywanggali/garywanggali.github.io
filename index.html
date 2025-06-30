@@ -115,24 +115,31 @@
                 .then((response) => response.json())
                 .then((data) => {
                     L.geoJSON(data, {
-                        onEachFeature: function (feature, layer) {
-                            let stateName;
-                            if (country === "USA") {
-                                stateName = feature.properties.NAME_1;
-                            } else if (country === "Malaysia") {
-                                stateName = feature.properties.name;
-                            }
+                    onEachFeature: function (feature, layer) {
+                        let stateName;
+                        if (country === "USA") {
+                            stateName = feature.properties.NAME_1;
+                        } else if (country === "Malaysia") {
+                            stateName = feature.properties.name;
+                        }
 
-                            const flagFile = stateFlags[stateName];
-                            const center =
-                                manualCenters[stateName] || layer.getBounds().getCenter();
+                        console.log("加载州名:", stateName);  // ✅ 打印所有州名（看看名字对不对）
 
-                            if (flagFile) {
-                                const icon = createFlagIcon(flagFile, 40);
-                                const marker = L.marker(center, { icon }).addTo(map);
-                                markers.push({ marker, flagFile, center });
-                            }
-                        },
+                        const flagFile = stateFlags[stateName];
+
+                        if (!flagFile) {
+                            console.warn("⚠️ 没有找到对应旗帜的州名:", stateName); // ⚠️ 警告找不到旗帜的州名
+                        }
+
+                        const center = manualCenters[stateName] || layer.getBounds().getCenter();
+
+                        if (flagFile) {
+                            const icon = createFlagIcon(flagFile, 40);
+                            const marker = L.marker(center, { icon }).addTo(map);
+                            markers.push({ marker, flagFile, center });
+                        }
+                    }
+
                     }).addTo(map);
                     updateIconSizes();
                 });
