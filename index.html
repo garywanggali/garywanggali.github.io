@@ -111,7 +111,7 @@
                 .then(data => {
                     L.geoJSON(data, {
                         onEachFeature: function(feature, layer) {
-                            const stateName = feature.properties.NAME_1;
+                            const stateName = feature.properties.name;
                             const flagFile = stateFlags[stateName];
                             let center = manualCenters[stateName] || layer.getBounds().getCenter();
 
