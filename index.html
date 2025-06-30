@@ -9,10 +9,9 @@
             height: 500px;
             width: 100%;
         }
-        /* 这里给图标容器加基础样式 */
         .flag-marker img {
             display: block;
-            pointer-events: none; /* 图标不阻止地图拖拽 */
+            pointer-events: none;
         }
     </style>
 </head>
@@ -22,16 +21,16 @@
 
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
-        // 你手写的特殊州中心点（阿拉斯加举例）
         const manualCenters = {
-            'Alaska': [66.2181, -149.9003], // 注意：纬度, 经度
+            'Alaska': [66.2181, -149.9003],
             'Hawaii': [20.7967, -156.3319],
             'Nevada': [38.8135, -117.0554],
             'NorthCarolina': [35.7301, -79.6064],
-            'Idaho':[43.7405, -114.4788],
+            'Idaho': [43.7405, -114.4788]
         };
 
         const stateFlags = {
+            // USA States
             'Alabama': 'alabama_flag.png',
             'Alaska': 'alaska_flag.png',
             'Arizona': 'arizona_flag.png',
@@ -81,19 +80,22 @@
             'Washington': 'washington_flag.png',
             'WestVirginia': 'west_virginia_flag.png',
             'Wisconsin': 'wisconsin_flag.png',
-            'Wyoming': 'wyoming_flag.png'
+            'Wyoming': 'wyoming_flag.png',
+            // Malaysia States (example, you can add more)
+            'Johor': 'johor_flag.png',
+            'Kedah': 'kedah_flag.png',
+            'Kelantan': 'kelantan_flag.png',
+            'Malacca': 'malacca_flag.png'
         };
 
-        const map = L.map('map').setView([37, -96], 4);
+        const map = L.map('map').setView([20, 0], 2);  // 世界视角
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
 
-        // 用于存储所有marker，方便缩放时更新图标大小
         const markers = [];
 
-        // 创建DivIcon函数，size单位是像素
         function createFlagIcon(url, size) {
             return L.divIcon({
                 className: 'flag-marker',
@@ -103,44 +105,45 @@
             });
         }
 
-        fetch('usa_states.geojson')
-        .then(response => response.json())
-        .then(data => {
-            L.geoJSON(data, {
-                onEachFeature: function(feature, layer) {
-                    const stateName = feature.properties.NAME_1;
-                    const flagFile = stateFlags[stateName];
+        function loadGeoJSON(filename) {
+            fetch(filename)
+                .then(response => response.json())
+                .then(data => {
+                    L.geoJSON(data, {
+                        onEachFeature: function(feature, layer) {
+                            const stateName = feature.properties.NAME_1;
+                            const flagFile = stateFlags[stateName];
+                            let center = manualCenters[stateName] || layer.getBounds().getCenter();
 
-                    // 优先用手写中心点
-                    let center = manualCenters[stateName];
-                    if (!center) {
-                        center = layer.getBounds().getCenter();
-                    }
+                            if (flagFile) {
+                                const icon = createFlagIcon(flagFile, 40);
+                                const marker = L.marker(center, { icon }).addTo(map);
+                                markers.push({ marker, flagFile, center });
+                            }
+                        }
+                    }).addTo(map);
 
-                    if (flagFile) {
-                        const icon = createFlagIcon(flagFile, 40);
-                        const marker = L.marker(center, { icon }).addTo(map);
-                        markers.push({ marker, flagFile, center });
-                    }
-                }
-            }).addTo(map);
-
-            function updateIconSizes() {
-                const zoom = map.getZoom();
-                const baseSize = 30;
-                let size = baseSize * Math.pow(1.8, zoom - 4);
-                size = Math.min(Math.max(size, 20), 80);  // 限制大小范围
-
-                markers.forEach(({ marker, flagFile }) => {
-                    const newIcon = createFlagIcon(flagFile, size);
-                    marker.setIcon(newIcon);
+                    updateIconSizes();
                 });
-            }
+        }
 
+        // 加载美国和马来西亚的地图
+        loadGeoJSON('usa_states.geojson');
+        loadGeoJSON('malaysia_states.geojson');
 
-            map.on('zoomend', updateIconSizes);
-            updateIconSizes();  // 初始调用一次
-        });
+        function updateIconSizes() {
+            const zoom = map.getZoom();
+            const baseSize = 30;
+            let size = baseSize * Math.pow(1.8, zoom - 4);
+            size = Math.min(Math.max(size, 20), 80);
+
+            markers.forEach(({ marker, flagFile }) => {
+                const newIcon = createFlagIcon(flagFile, size);
+                marker.setIcon(newIcon);
+            });
+        }
+
+        map.on('zoomend', updateIconSizes);
     </script>
 </body>
 </html>
