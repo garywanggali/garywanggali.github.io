@@ -124,8 +124,8 @@
 
             function updateIconSizes() {
                 const zoom = map.getZoom();
-                const baseSize = 20;
-                let size = baseSize * Math.pow(1.5, zoom - 4);
+                const baseSize = 30;
+                let size = baseSize * Math.pow(2.0, zoom - 4);
                 size = Math.min(Math.max(size, 20), 80);  // 限制大小范围
 
                 markers.forEach(({ marker, flagFile }) => {
