@@ -30,7 +30,10 @@
             Nevada: [38.8135, -117.0554],
             NorthCarolina: [35.7301, -79.6064],
             Idaho: [43.7405, -114.4788],
-            // 马来西亚如果有特别中心点可加
+            Johor: [1.5, 103.6],      
+            Kedah: [6.1, 100.3],
+            Kelantan: [6.1, 102.2],
+            Malacca: [2.2, 102.2],
         };
 
         const stateFlags = {
@@ -111,38 +114,42 @@
 
         // 传入参数说明country用来区分GeoJSON字段名不同
         function loadGeoJSON(filename, country) {
-            fetch(filename)
-                .then((response) => response.json())
-                .then((data) => {
-                    L.geoJSON(data, {
-                    onEachFeature: function (feature, layer) {
-                        let stateName;
-                        if (country === "USA") {
-                            stateName = feature.properties.NAME_1;
-                        } else if (country === "Malaysia") {
-                            stateName = feature.properties.name;
-                        }
+        fetch(filename)
+            .then((response) => response.json())
+            .then((data) => {
+            L.geoJSON(data, {
+                onEachFeature: function (feature, layer) {
+                let stateName = "";
+                if (country === "USA") {
+                    stateName = feature.properties.NAME_1;
+                } else if (country === "Malaysia") {
+                    stateName = feature.properties.name;
+                }
 
-                        console.log("加载州名:", stateName);  // ✅ 打印所有州名（看看名字对不对）
+                console.log("加载州名:", stateName);
 
-                        const flagFile = stateFlags[stateName];
+                if (!stateName) {
+                    console.warn("⚠️ 找不到州名字段！");
+                    return;
+                }
 
-                        if (!flagFile) {
-                            console.warn("⚠️ 没有找到对应旗帜的州名:", stateName); // ⚠️ 警告找不到旗帜的州名
-                        }
+                const flagFile = stateFlags[stateName];
 
-                        const center = manualCenters[stateName] || layer.getBounds().getCenter();
-
-                        if (flagFile) {
-                            const icon = createFlagIcon(flagFile, 40);
-                            const marker = L.marker(center, { icon }).addTo(map);
-                            markers.push({ marker, flagFile, center });
-                        }
-                    }
-
-                    }).addTo(map);
-                    updateIconSizes();
-                });
+                if (!flagFile) {
+                    console.warn("⚠️ 没有找到对应旗帜的州名:", stateName);
+                } else {
+                    const center = manualCenters[stateName] || layer.getBounds().getCenter();
+                    const icon = createFlagIcon(flagFile, 40);
+                    const marker = L.marker(center, { icon }).addTo(map);
+                    markers.push({ marker, flagFile, center });
+                }
+                },
+            }).addTo(map);
+            updateIconSizes();
+            })
+            .catch((error) => {
+            console.error("加载GeoJSON失败:", error);
+            });
         }
 
         loadGeoJSON("usa_states.geojson", "USA");
