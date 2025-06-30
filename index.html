@@ -9,9 +9,10 @@
             height: 500px;
             width: 100%;
         }
-        .flag-popup img {
-            max-width: 100px;
-            max-height: 70px;
+        /* 这里给图标容器加基础样式 */
+        .flag-marker img {
+            display: block;
+            pointer-events: none; /* 图标不阻止地图拖拽 */
         }
     </style>
 </head>
@@ -21,9 +22,12 @@
 
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
+        // 你手写的特殊州中心点（阿拉斯加举例）
         const manualCenters = {
-            'Alaska':[66.2181, -149.9003],
-        }
+            'Alaska': [61.2181, -149.9003], // 注意：纬度, 经度
+            'Hawaii': [20.7967, -156.3319]
+        };
+
         const stateFlags = {
             'Alabama': 'alabama_flag.png',
             'Alaska': 'alaska_flag.png',
@@ -83,35 +87,57 @@
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
 
+        // 用于存储所有marker，方便缩放时更新图标大小
+        const markers = [];
+
+        // 创建DivIcon函数，size单位是像素
+        function createFlagIcon(url, size) {
+            return L.divIcon({
+                className: 'flag-marker',
+                html: `<img src="${url}" style="width:${size}px; height:${size * 0.7}px;">`,
+                iconSize: [size, size * 0.7],
+                iconAnchor: [size / 2, (size * 0.7) / 2]
+            });
+        }
+
         fetch('usa_states.geojson')
         .then(response => response.json())
         .then(data => {
             L.geoJSON(data, {
-            onEachFeature: function(feature, layer) {
-                const stateName = feature.properties.NAME_1;
-                const flagFile = stateFlags[stateName];
+                onEachFeature: function(feature, layer) {
+                    const stateName = feature.properties.NAME_1;
+                    const flagFile = stateFlags[stateName];
 
-                // 优先用手写中心点
-                let center = manualCenters[stateName];
-                if (!center) {
-                center = layer.getBounds().getCenter();
-                }
+                    // 优先用手写中心点
+                    let center = manualCenters[stateName];
+                    if (!center) {
+                        center = layer.getBounds().getCenter();
+                    }
 
-                if (flagFile) {
-                const icon = L.icon({
-                    iconUrl: flagFile,
-                    iconSize: [40, 28],
-                    iconAnchor: [20, 14]
-                });
-                L.marker(center, { icon }).addTo(map);
+                    if (flagFile) {
+                        const icon = createFlagIcon(flagFile, 40);
+                        const marker = L.marker(center, { icon }).addTo(map);
+                        markers.push({ marker, flagFile, center });
+                    }
                 }
-            }
             }).addTo(map);
+
+            // 地图缩放时更新所有图标大小
+            function updateIconSizes() {
+                const zoom = map.getZoom();
+                // 你可以调节这里的基准大小和缩放系数
+                const baseSize = 6; // 缩放倍数基准
+                const size = baseSize * zoom;
+
+                markers.forEach(({ marker, flagFile }) => {
+                    const newIcon = createFlagIcon(flagFile, size);
+                    marker.setIcon(newIcon);
+                });
+            }
+
+            map.on('zoomend', updateIconSizes);
+            updateIconSizes();  // 初始调用一次
         });
-
-
-
     </script>
 </body>
 </html>
-
