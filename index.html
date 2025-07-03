@@ -135,11 +135,14 @@
             L.geoJSON(data, {
                 onEachFeature: function (feature, layer) {
                 let stateName = "";
-                if (country === "USA") {
-                    stateName = feature.properties.NAME_1;
-                } else if (country === "Malaysia") {
-                    stateName = feature.properties.shapeName;
-                }
+            if (country === "USA") {
+                stateName = feature.properties.NAME_1;
+            } else if (country === "Malaysia") {
+                stateName = feature.properties.shapeName;
+            } else if (country === "Brazil") {
+                stateName = feature.properties.NAME_1;
+            }
+
 
                 console.log("加载州名:", stateName);
 
