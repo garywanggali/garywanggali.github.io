@@ -4,24 +4,19 @@
       <h1>My Skills</h1>
       <p>Here are some of the computer-related skills I have learned and practiced:</p>
       
-      <n-space vertical size="large">
+      <n-space vertical size="medium">
         <div v-for="skill in skills" :key="skill.name" class="skill-item">
           <div class="skill-header">
             <span>{{ skill.name }}</span>
           </div>
-          <!-- 修正 value 范围为 0~1，并设置高度和颜色 -->
-            <n-progress
+          <n-progress
             :percentage="skill.level"
             :show-value="true"
             type="line"
-            :height="25"
+            :height="18"
             :color="progressColor(skill.level)"
             style="width: 100%"
-            />
-
-
-
-
+          />
         </div>
       </n-space>
     </n-card>
@@ -49,10 +44,9 @@ export default {
   },
   methods: {
     progressColor(level) {
-      // 根据技能水平返回不同颜色
-      if (level >= 85) return '#4caf50' // 绿色
-      if (level >= 70) return '#ff9800' // 橙色
-      return '#f44336' // 红色
+      if (level >= 85) return '#4caf50' // 高级绿色
+      if (level >= 50) return '#ff9800' // 中级橙色
+      return '#f44336' // 新手红色
     }
   }
 }
@@ -60,46 +54,51 @@ export default {
 
 <style scoped>
 .skills-background {
-  min-height: 100vh;
+  height: 100vh; /* 一屏高度 */
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center; /* 垂直居中 */
   background: linear-gradient(135deg, #6b73ff 0%, #000dff 100%);
-  padding: 60px 20px;
+  padding: 20px;
 }
 
 .skills-card {
-  max-width: 800px;
+  max-width: 600px;       /* 更紧凑 */
   width: 100%;
-  padding: 40px;
-  border-radius: 20px;
+  padding: 20px 30px;     /* 缩小内边距 */
+  border-radius: 16px;
   background-color: rgba(255,255,255,0.95);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
   text-align: left;
 }
 
 .skills-card h1 {
-  font-size: 32px;
-  margin-bottom: 10px;
+  font-size: 28px;          /* 缩小标题 */
+  margin-bottom: 8px;
   text-align: center;
 }
 
 .skills-card p {
-  font-size: 16px;
-  margin-bottom: 30px;
+  font-size: 14px;          /* 缩小描述文字 */
+  margin-bottom: 20px;
   text-align: center;
   color: #333;
 }
 
 .skill-item {
-  margin-bottom: 20px;
+  margin-bottom: 12px;      /* 缩小间距 */
 }
 
 .skill-header {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   font-weight: 500;
   color: #333;
+  font-size: 14px;          /* 缩小字体 */
+}
+
+.n-progress {
+  height: 18px;             /* 缩小进度条高度 */
 }
 </style>

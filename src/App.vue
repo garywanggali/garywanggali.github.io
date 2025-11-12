@@ -78,67 +78,110 @@ export default {
     }
   },
   methods: {
-    goPage(pageName) {
+  goPage(pageName) {
+    // 如果是 Home 内部的 section
+    const homeSections = ['home', 'skills', 'about', 'projects', 'contact']
+    if (homeSections.includes(pageName.toLowerCase())) {
+      // 如果不在 Home 页，先跳到 Home
+      if (this.$route.name !== 'Home') {
+        this.$router.push({ name: 'Home' }).then(() => {
+          // 等 Vue 渲染完成，再滚动
+          this.$nextTick(() => this.scrollToSection(pageName))
+        })
+      } else {
+        // 已在 Home 页，直接滚动
+        this.scrollToSection(pageName)
+      }
+    } else {
+      // 外部页面直接路由跳转
       this.$router.push({ name: pageName })
-      this.menuOpen = false
-    },
-    openLink(url) {
-      window.open(url, '_blank')
     }
+    this.menuOpen = false
+  },
+  scrollToSection(sectionId) {
+    const el = document.getElementById(sectionId.toLowerCase())
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  },
+  openLink(url) {
+    window.open(url, '_blank')
   }
+}
+
 }
 </script>
 
 <style scoped>
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 40px;
-  background-color: #fff;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+  background: rgba(255, 255, 255, 0.9); /* 半透明 */
+  backdrop-filter: blur(8px); /* 毛玻璃效果 */
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
   position: sticky;
   top: 0;
   z-index: 100;
+  padding: 0 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-/* logo */
+
 .logo {
   font-size: 22px;
   font-weight: bold;
   color: #007bff;
+  transition: transform 0.2s, color 0.2s;
 }
 
-/* 导航按钮 */
+.logo:hover {
+  transform: scale(1.05);
+  color: #0056b3;
+}
+
+
 .nav-buttons .n-button {
   font-weight: 500;
   color: #333;
-  transition: color 0.3s, transform 0.2s;
+  position: relative;
+  transition: color 0.3s;
 }
 
-.nav-buttons .n-button:hover {
-  color: #007bff;
-  transform: translateY(-2px);
+.nav-buttons .n-button::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  background-color: #007bff;
+  left: 0;
+  bottom: -4px;
+  transition: width 0.3s;
 }
 
-.nav-buttons .active {
-  color: #007bff;
-  font-weight: bold;
+.nav-buttons .n-button:hover::after,
+.nav-buttons .active::after {
+  width: 100%;
 }
 
-/* 社交图标 */
-.social-icons {
-  display: flex;
-  gap: 12px;
+
+.social-icons .n-button {
+  transition: transform 0.2s;
 }
 
 .social-icons .n-button:hover {
+  transform: scale(1.2);
   color: #007bff;
 }
 
-/* 移动端按钮 */
+
 .mobile-menu-btn {
   display: none;
+  color: #007bff;
+  transition: transform 0.2s;
+}
+
+.mobile-menu-btn:hover {
+  transform: scale(1.2);
 }
 
 @media (max-width: 768px) {
@@ -149,4 +192,5 @@ export default {
     display: block;
   }
 }
+
 </style>
