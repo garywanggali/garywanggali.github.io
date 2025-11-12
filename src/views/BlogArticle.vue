@@ -1,44 +1,53 @@
 <template>
-  <div class="blog-article">
-    <!-- 页面显示标题 -->
-    <h1>{{ articleTitle }}</h1>
-    <!-- 渲染 Markdown 内容（去掉了 Markdown 里的标题） -->
+  <n-card :title="articleTitle" class="blog-article">
     <div v-html="htmlContent"></div>
-  </div>
+  </n-card>
 </template>
 
 <script>
 import MarkdownIt from 'markdown-it'
-// 这里根据 id 动态导入对应的 Markdown 文件
-// 假设你的文章文件命名为 1.md, 2.md 等，放在 src/data
-import blog1 from '../data/blog1.md?raw'
+import markdownItKatex from 'markdown-it-katex'
+import 'katex/dist/katex.min.css'
 
-const md = new MarkdownIt()
+// 创建 MarkdownIt 实例，并启用 KaTeX
+const md = new MarkdownIt({
+  html: true,
+  linkify: true,
+  typographer: true
+}).use(markdownItKatex)
 
 export default {
   name: 'BlogArticle',
-  props: ['id'], // 路由传入的文章 id
+  props: ['id'],
   data() {
     return {
       articleTitle: '',
       htmlContent: ''
     }
   },
-  created() {
-    // 根据 id 选择对应 Markdown
-    let content = ''
-    if (this.id === '1') content = blog1
-    else if (this.id === '2') content = blog2
-    // 可以继续添加其他文章
+  async created() {
+    // 自动导入所有 blog*.md
+    const modules = import.meta.glob('../data/blog*.md', { as: 'raw' })
+    const targetPath = `../data/blog${this.id}.md`
 
-    // 假设标题在 Markdown 的第一行以特殊注释形式给出，例如：<!-- title: XXX -->
-    const titleMatch = content.match(/<!--\s*title:\s*(.+?)\s*-->/)
-    if (titleMatch) {
-      this.articleTitle = titleMatch[1]
-      // 去掉注释行
-      content = content.replace(titleMatch[0], '')
+    if (!modules[targetPath]) {
+      this.articleTitle = '404 - 未找到该文章'
+      this.htmlContent = '<p>文章不存在。</p>'
+      return
     }
 
+    const raw = await modules[targetPath]()
+
+    // 解析标题
+    const commentTitle = raw.match(/<!--\s*title:\s*(.+?)\s*-->/)
+    const markdownTitle = raw.match(/^#\s*(.+)/m)
+    this.articleTitle = commentTitle ? commentTitle[1] : (markdownTitle ? markdownTitle[1] : `文章 ${this.id}`)
+
+    // 去掉标题行
+    let content = raw.replace(/<!--\s*title:\s*(.+?)\s*-->/, '')
+    content = content.replace(/^#\s*(.+)\n/, '')
+
+    // 渲染 Markdown，支持 KaTeX 公式
     this.htmlContent = md.render(content)
   }
 }
@@ -48,15 +57,6 @@ export default {
 .blog-article {
   max-width: 800px;
   margin: 40px auto;
-  padding: 20px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-.blog-article h1 {
-  text-align: center;
-  margin-bottom: 20px;
 }
 
 .blog-article p {
@@ -69,5 +69,10 @@ export default {
   padding: 12px;
   border-radius: 6px;
   overflow-x: auto;
+}
+
+/* KaTeX 公式样式微调 */
+.katex {
+  font-size: 1.1em;
 }
 </style>

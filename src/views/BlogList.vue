@@ -1,17 +1,25 @@
 <template>
   <div class="blog-list">
     <h1>My Blog</h1>
-    <ul>
-      <li v-for="post in posts" :key="post.id">
-        <router-link :to="`/blog/${post.id}`">{{ post.title }}</router-link>
-      </li>
-    </ul>
+    <n-space vertical size="medium">
+      <n-card
+        v-for="post in posts"
+        :key="post.id"
+        :title="post.title"
+        hoverable
+      >
+        <router-link :to="`/blog/${post.id}`">阅读文章 →</router-link>
+      </n-card>
+    </n-space>
   </div>
 </template>
 
 <script>
+import { NCard, NSpace } from 'naive-ui'
+
 export default {
   name: 'BlogList',
+  components: { NCard, NSpace },
   data() {
     return {
       posts: []
@@ -43,10 +51,6 @@ export default {
 .blog-list {
   max-width: 800px;
   margin: 40px auto;
-  padding: 20px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .blog-list h1 {
@@ -54,19 +58,9 @@ export default {
   margin-bottom: 20px;
 }
 
-.blog-list ul {
-  list-style: none;
-  padding: 0;
-}
-
-.blog-list li {
-  margin-bottom: 12px;
-  font-size: 18px;
-}
-
 .blog-list a {
-  text-decoration: none;
   color: #007bff;
+  text-decoration: none;
 }
 
 .blog-list a:hover {

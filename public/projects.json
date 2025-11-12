@@ -1,0 +1,41 @@
+[
+  {
+    "id": 1,
+    "title": "Flask AP Registration System",
+    "cover": "/images/projects/flask_ap.jpg",
+    "description": "A web system for AP course registration built with Flask and MySQL. Now used in school's platforms. Got positive feedback from classmates and teachers who used the system.",
+    "images": [
+      "/images/projects/flask_ap_1.jpg",
+      "/images/projects/flask_ap_2.jpg"
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Online Mahjong Game (Jinhua Rules)",
+    "cover": "/images/projects/mahjong.jpg",
+    "description": "Elder people in my hometown used to play this game with me. I'm afraid that the game will lost its popularity. I'm trying to make a online version of it."
+  },
+  {
+    "id":3,
+    "title": "Flappy Bird-2D",
+    "cover": "/images/projects/flappybird.jpg",
+    "description": "Flappy Bird is my first game developed by cocos engine. The game is based on the physics of real life. The bird is flying through the sky and avoiding pipes. The player has to make the bird fly higher and higher to make the bird pass the pipes."
+  },
+  {
+    "id":4,
+    "title": "Earth Online",
+    "cover": "/images/projects/earthonline.jpg",
+    "description": "Earth Online is a game played on web.The goal of the game is that player can control the country as detail as they can.",
+    "images": [
+        "/images/projects/earthonline_1.jpg",
+        "/images/projects/earthonline_2.jpg",
+        "/images/projects/earthonline_3.jpg"
+    ]
+  },
+  {
+    "id":5,
+    "title": "A Learnable Russia- Geoguessr/Tuxun practice", 
+    "cover": "/images/projects/alr.jpg",
+    "description": "A Learnable Russia is tool to practice your Geoguessr/Tuxun skills. You can get familiar with Google Street View cars captured the antenna status of different regions and roads in Russia and accurately selected them on the map."
+  }
+]
