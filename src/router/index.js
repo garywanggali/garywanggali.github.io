@@ -10,12 +10,15 @@ import ProjectDetail from '../views/ProjectDetail.vue'
 
 const routes = [
   { path: '/', name:'Home',component: Home },
-  { path: '/blog', name: 'BlogList', component: BlogList },
+  // 将博客列表作为 Home 的第5屏，通过重定向实现“从 Home 往下滑”
+  { path: '/blog', redirect: { path: '/', hash: '#bloglist' } },
   { path: '/blog/:id', name: 'BlogArticle', component: BlogArticle, props: true },
   { path: '/about', name: 'About', component: About },
-  { path: '/contact', name: 'Contact', component: Contact },
+  // 联系页作为 Home 的第6屏
+  { path: '/contact', redirect: { path: '/', hash: '#contact' } },
   { path: '/skills', name: 'Skills', component: Skills },
-  { path: '/projects', name: 'Projects', component: Projects },
+  // 项目列表作为 Home 的第4屏
+  { path: '/projects', redirect: { path: '/', hash: '#projects' } },
   { path: '/ProjectsDetail/:id', name: 'ProjectDetail', component: ProjectDetail}
 ]
 

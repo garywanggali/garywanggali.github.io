@@ -1,5 +1,5 @@
 <template>
-  <div class="blog-list">
+  <div class="blog-list" id="bloglist">
     <h1>My Blog</h1>
     <n-space vertical size="medium">
       <n-card
@@ -43,6 +43,36 @@ export default {
 
     // 按 id 排序
     this.posts = postsArray.sort((a, b) => a.id - b.id)
+  }
+  ,mounted() {
+    // 绑定滚动事件，发给 App.vue
+    const container = document.querySelector('.page-content')
+    if (container) {
+      container.addEventListener('scroll', this.onScroll)
+      this.$nextTick(() => this.onScroll())
+    }
+  },
+  beforeUnmount() {
+    const container = document.querySelector('.page-content')
+    if (container) container.removeEventListener('scroll', this.onScroll)
+  },
+  methods: {
+    onScroll() {
+      const container = document.querySelector('.page-content')
+      if (!container) return
+
+      const el = document.getElementById('bloglist')
+      if (!el) return
+
+      const rect = el.getBoundingClientRect()
+      const containerRect = container.getBoundingClientRect()
+      const top = rect.top - containerRect.top
+      const bottom = rect.bottom - containerRect.top
+
+      if (top < container.clientHeight / 2 && bottom > container.clientHeight / 2) {
+        this.$emit('update-active-section', 'bloglist')
+      }
+    }
   }
 }
 </script>

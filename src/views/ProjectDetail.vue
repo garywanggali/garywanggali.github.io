@@ -1,9 +1,16 @@
 <template>
   <div class="project-detail-page" v-if="project">
-    <n-button text @click="$router.back()">← Back</n-button>
+    <n-button text class="back-btn" @click="$router.back()">← Back</n-button>
     <h1 class="title">{{ project.title }}</h1>
     <img :src="project.cover" class="cover" alt="cover" />
     <p class="description">{{ project.description }}</p>
+
+    <template v-if="project.skills && project.skills.length">
+      <h2>Skills Used</h2>
+      <n-space wrap size="small" class="skills-tags">
+        <n-tag v-for="skill in project.skills" :key="skill" type="success" size="small">{{ skill }}</n-tag>
+      </n-space>
+    </template>
 
     <h2>More Images</h2>
     <div class="more-images">
@@ -13,8 +20,10 @@
 </template>
 
 <script>
+import { NTag, NSpace } from 'naive-ui'
 export default {
   name: 'ProjectDetail',
+  components: { NTag, NSpace },
   data() {
     return {
       project: null
@@ -38,6 +47,11 @@ export default {
   padding: 60px;
 }
 
+.back-btn {
+  margin-top: 24px;
+  margin-bottom: 12px;
+}
+
 .title {
   font-size: 32px;
   font-weight: bold;
@@ -55,6 +69,10 @@ export default {
 .description {
   font-size: 18px;
   margin-bottom: 40px;
+}
+
+.skills-tags {
+  margin-bottom: 32px;
 }
 
 .more-images {

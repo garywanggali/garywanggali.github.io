@@ -1,5 +1,5 @@
 <template>
-  <div class="contact-background">
+  <div class="contact-background" id="contact">
     <n-card class="contact-card" bordered>
       <h1>Contact Me</h1>
       <p>Feel free to reach out to me via the following channels:</p>
@@ -32,6 +32,35 @@ export default {
       GoogleEmail: 'garywang.gali@gmail.com',
       QQEmail: 'garywang.gali@qq.com',
       github: 'https://github.com/garywanggali',
+    }
+  },
+  mounted() {
+    const container = document.querySelector('.page-content')
+    if (container) {
+      container.addEventListener('scroll', this.onScroll)
+      this.$nextTick(() => this.onScroll())
+    }
+  },
+  beforeUnmount() {
+    const container = document.querySelector('.page-content')
+    if (container) container.removeEventListener('scroll', this.onScroll)
+  },
+  methods: {
+    onScroll() {
+      const container = document.querySelector('.page-content')
+      if (!container) return
+
+      const el = document.getElementById('contact')
+      if (!el) return
+
+      const rect = el.getBoundingClientRect()
+      const containerRect = container.getBoundingClientRect()
+      const top = rect.top - containerRect.top
+      const bottom = rect.bottom - containerRect.top
+
+      if (top < container.clientHeight / 2 && bottom > container.clientHeight / 2) {
+        this.$emit('update-active-section', 'contact')
+      }
     }
   }
 }

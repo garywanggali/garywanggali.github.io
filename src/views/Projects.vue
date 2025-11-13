@@ -1,5 +1,5 @@
 <template>
-  <div class="projects-page">
+  <div class="projects-page" id="projects">
     <h1 class="page-title">My Projects</h1>
     <n-grid :cols="3" :x-gap="24" :y-gap="24">
       <n-grid-item v-for="project in projects" :key="project.id">
@@ -34,10 +34,39 @@ export default {
     } catch (err) {
       console.error('加载项目数据失败', err)
     }
+
+    // 绑定滚动事件，发给 App.vue
+    const container = document.querySelector('.page-content')
+    if (container) {
+      container.addEventListener('scroll', this.onScroll)
+      this.$nextTick(() => this.onScroll())
+    }
+  },
+  beforeUnmount() {
+    const container = document.querySelector('.page-content')
+    if (container) container.removeEventListener('scroll', this.onScroll)
   },
   methods: {
     goToDetail(id) {
       this.$router.push({ name: 'ProjectDetail', params: { id } })
+    },
+
+    onScroll() {
+      const container = document.querySelector('.page-content')
+      if (!container) return
+
+      const el = document.getElementById('projects')
+      if (!el) return
+
+      const rect = el.getBoundingClientRect()
+      const containerRect = container.getBoundingClientRect()
+      const top = rect.top - containerRect.top
+      const bottom = rect.bottom - containerRect.top
+
+      // 当 projects 在页面中可见时，发事件给 App.vue
+      if (top < container.clientHeight / 2 && bottom > container.clientHeight / 2) {
+        this.$emit('update-active-section', 'projects')
+      }
     }
   }
 }

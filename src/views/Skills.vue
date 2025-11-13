@@ -60,6 +60,7 @@ export default {
   align-items: center; /* 垂直居中 */
   background: linear-gradient(135deg, #6b73ff 0%, #000dff 100%);
   padding: 20px;
+  scroll-snap-align: start;
 }
 
 .skills-card {

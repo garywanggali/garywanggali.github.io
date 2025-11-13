@@ -1,10 +1,14 @@
 <template>
-  <n-card :title="articleTitle" class="blog-article">
-    <div v-html="htmlContent"></div>
-  </n-card>
+  <div class="blog-article">
+    <n-button text class="back-btn" @click="$router.back()">← Back</n-button>
+    <n-card :title="articleTitle">
+      <div v-html="htmlContent"></div>
+    </n-card>
+  </div>
 </template>
 
 <script>
+import { NButton } from 'naive-ui'
 import MarkdownIt from 'markdown-it'
 import markdownItKatex from 'markdown-it-katex'
 import 'katex/dist/katex.min.css'
@@ -18,6 +22,7 @@ const md = new MarkdownIt({
 
 export default {
   name: 'BlogArticle',
+  components: { NButton },
   props: ['id'],
   data() {
     return {
@@ -57,6 +62,11 @@ export default {
 .blog-article {
   max-width: 800px;
   margin: 40px auto;
+}
+
+.back-btn {
+  margin-top: 24px;
+  margin-bottom: 12px;
 }
 
 .blog-article p {

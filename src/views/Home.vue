@@ -1,6 +1,6 @@
 <template>
   <div class="home-page">
-    <!-- 第一屏 -->
+    <!-- 第一屏：Hero -->
     <section
       class="hero-section"
       :style="{
@@ -23,138 +23,153 @@
             I started with robotics in elementary school and later learned Scratch, C++, Python, and web development.
             Outside tech, I love football, strategy games, and exploring social topics.
           </p>
-          <n-button type="primary" @click="scrollTo('skills')">See My Skills ↓</n-button>
+          <n-button type="primary" @click="scrollTo('about')">Learn More ↓</n-button>
         </div>
       </div>
     </section>
 
-    <!-- 第二屏（Skills） -->
+    <!-- 第二屏：About -->
+    <section id="about" class="about-page">
+      <h1 class="page-title">About Me</h1>
+
+      <n-card class="about-card" v-if="about.tech">
+        <h2>{{ about.tech.title }}</h2>
+        <p>{{ about.tech.content }}</p>
+      </n-card>
+
+      <n-card class="about-card" v-if="about.nonTech">
+        <h2>{{ about.nonTech.title }}</h2>
+        <p>{{ about.nonTech.content }}</p>
+      </n-card>
+    </section>
+
+    <!-- 第三屏：Skills -->
     <section id="skills">
       <Skills />
+    </section>
+
+    <!-- 第四屏：Projects -->
+    <section id="projects">
+      <Projects />
+    </section>
+
+    <!-- 第五屏：Blog -->
+    <section id="bloglist">
+      <BlogList />
+    </section>
+
+    <!-- 第六屏：Contact -->
+    <section id="contact">
+      <Contact />
     </section>
   </div>
 </template>
 
 <script>
-import { NButton } from 'naive-ui'
+import { NButton, NCard } from 'naive-ui'
 import Skills from './Skills.vue'
+import Projects from './Projects.vue'
+import BlogList from './BlogList.vue'
+import Contact from './Contact.vue'
 import GaryPhoto from '../assets/GaryPhoto.jpg'
 import BgImage from '../assets/background.jpg'
 
 export default {
   name: 'Home',
-  components: { NButton, Skills },
+  components: { NButton, Skills, Projects, BlogList, Contact, NCard },
   data() {
     return {
       photo: GaryPhoto,
-      bgImage: BgImage
+      bgImage: BgImage,
+      about: {},
+      activeSection: 'home' // 当前显示的 section
     }
   },
   methods: {
     scrollTo(id) {
-      document.getElementById(id).scrollIntoView({ behavior: 'smooth' })
+      const el = document.getElementById(id)
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    },
+    onScroll() {
+    const sections = ['home', 'about', 'skills', 'projects', 'bloglist', 'contact']
+    const container = this.$el
+    for (const id of sections) {
+        const el = container.querySelector('#' + id)
+        if (!el) continue
+        const rect = el.getBoundingClientRect()
+        const containerRect = container.getBoundingClientRect()
+        const top = rect.top - containerRect.top
+        const bottom = rect.bottom - containerRect.top
+        if (top < container.clientHeight / 2 && bottom > container.clientHeight / 2) {
+        if (this.activeSection !== id) {
+            this.activeSection = id
+            console.log('当前显示 section:', id)
+            this.$emit('update-active-section', id) // 发给 App.vue
+        }
+        break
+        }
     }
+    },
+
+  },
+  async mounted() {
+    try {
+      const res = await fetch('/about.json')
+      this.about = await res.json()
+    } catch (err) {
+      console.error('加载 About 数据失败', err)
+    }
+
+    // 绑定滚动事件
+    const container = this.$el
+    if (container) {
+      container.addEventListener('scroll', this.onScroll)
+      this.$nextTick(() => this.onScroll()) // 页面加载时检测一次
+    }
+  },
+  beforeUnmount() {
+    const container = this.$el
+    if (container) container.removeEventListener('scroll', this.onScroll)
   }
 }
 </script>
 
-<style scoped>
 
+<style scoped>
+.home-page {
+  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
+  height: 100vh;
+}
+
+/* 每一屏高度 */
+.hero-section,
+.about-page,
+#skills,
+#projects,
+#bloglist,
+#contact {
+  scroll-snap-align: start;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Hero 部分 */
 .hero-section {
   display: flex;
-  height: 100vh; /* 👈 第一屏仍然一整页 */
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
   color: #fff;
 }
 
-.home-page {
-  scroll-snap-type: y mandatory;
-  overflow-y: scroll;
-  height: 100vh;
-}
-.hero-section, #skills {
-  scroll-snap-align: start;
-  height: 100vh;
-}
+/* 左侧个人信息栏 */ .sidebar { flex: 0 0 280px; background-color: rgba(255, 255, 255, 0.1); backdrop-filter: blur(8px); color: white; display: flex; flex-direction: column; align-items: center; padding: 60px 20px; box-shadow: 4px 0 12px rgba(0, 0, 0, 0.1); } .avatar { border: 3px solid #fff; margin-bottom: 20px; width: 140px; height: 140px; border-radius: 50%; object-fit: cover; object-position: center; } .name { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+.role, .interest { font-size: 15px; margin: 4px 0; color: #eee; }
 
-
-
-/* 左侧个人信息栏 */
-.sidebar {
-  flex: 0 0 280px;
-  background-color: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(8px);
-  color: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 60px 20px;
-  box-shadow: 4px 0 12px rgba(0, 0, 0, 0.1);
-}
-
-.avatar {
-  border: 3px solid #fff;
-  margin-bottom: 20px;
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  object-fit: cover;
-  object-position: center;
-}
-
-.name {
-  font-size: 28px;
-  font-weight: 700;
-  margin-bottom: 8px;
-}
-
-.role, .interest {
-  font-size: 15px;
-  margin: 4px 0;
-  color: #eee;
-}
-
-/* 中间 About Me 部分 */
-.about-section {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 80px 120px;
-}
-
-.about-section h2 {
-  font-size: 32px;
-  font-weight: 700;
-  margin-bottom: 24px;
-  color: #ffdf6b;
-}
-
-.about-section p {
-  font-size: 18px;
-  line-height: 1.8;
-  margin-bottom: 32px;
-  max-width: 700px;
-}
-
-.n-button {
-  align-self: flex-start;
-}
-
-
-
-/* About Me 外层容器，保证卡片垂直居中 */
-.about-section {
-  flex: 1;
-  display: flex;
-  justify-content: center; /* 水平居中 */
-  align-items: center;     /* 垂直居中 */
-  padding: 0 120px;        /* 两边留点空间 */
-}
-
-/* 半透明卡片包裹文字 */
+/* About Section */
+.about-section { flex: 1; display: flex; justify-content: center; align-items: center; padding: 0 120px; }
 .about-section-card {
   background-color: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(10px);
@@ -163,22 +178,23 @@ export default {
   max-width: 700px;
   color: #fff;
   box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-  font-family: 'Poppins', sans-serif; /* 修改字体 */
 }
+.about-section-card h2 { font-size: 32px; font-weight: 700; margin-bottom: 20px; color: #ffdf6b; }
+.about-section-card p { font-size: 18px; line-height: 1.8; margin-bottom: 24px; }
 
-
-.about-section-card h2 {
-  font-size: 32px;
-  font-weight: 700;
-  margin-bottom: 20px;
-  color: #ffdf6b;
+/* About Page 第二屏 */
+.about-page {
+  flex-direction: column;
+  padding: 60px;
+  gap: 40px;
 }
-
-.about-section-card p {
-  font-size: 18px;
-  line-height: 1.8;
-  margin-bottom: 24px;
+.page-title { font-size: 32px; font-weight: bold; text-align: center; margin-bottom: 20px; }
+.about-card {
+  padding: 24px;
+  border-radius: 16px;
+  background-color: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
 }
-
-
+.about-card h2 { font-size: 24px; margin-bottom: 12px; }
+.about-card p { font-size: 18px; line-height: 1.6; color: #333; }
 </style>
