@@ -1,32 +1,35 @@
 <template>
-  <div class="blog-list" id="bloglist">
-    <h1>My Blog</h1>
-    <n-space vertical size="medium">
-      <n-card
-        v-for="post in posts"
-        :key="post.id"
-        :title="post.title"
-        hoverable
-      >
-        <router-link :to="`/blog/${post.id}`">阅读文章 →</router-link>
-      </n-card>
-    </n-space>
+  <div class="blog-list" id="bloglist" :style="backgroundStyle">
+    <div class="blog-content">
+      <h1>{{ $t('bloglist.title') }}</h1>
+      <n-space vertical size="medium">
+        <n-card
+          v-for="post in posts"
+          :key="post.id"
+          :title="post.title"
+          hoverable
+        >
+          <router-link :to="`/blog/${post.id}`">{{ $t('bloglist.read') }}</router-link>
+        </n-card>
+      </n-space>
+    </div>
   </div>
 </template>
 
 <script>
 import { NCard, NSpace } from 'naive-ui'
+import BlogBg from '../assets/blog.jpg'
 
 export default {
   name: 'BlogList',
   components: { NCard, NSpace },
   data() {
     return {
-      posts: []
+      posts: [],
+      bgImage: BlogBg
     }
   },
   async created() {
-    // 自动导入 src/data 下所有 md 文件
     const modules = import.meta.glob('../data/*.md', { as: 'raw' })
     const postsArray = []
 
@@ -35,17 +38,14 @@ export default {
       if (!idMatch) continue
       const id = idMatch[1]
       const raw = await modules[path]()
-      // 从注释中解析标题
       const titleMatch = raw.match(/<!--\s*title:\s*(.+?)\s*-->/)
       const title = titleMatch ? titleMatch[1] : '文章 ' + id
       postsArray.push({ id, title })
     }
 
-    // 按 id 排序
     this.posts = postsArray.sort((a, b) => a.id - b.id)
-  }
-  ,mounted() {
-    // 绑定滚动事件，发给 App.vue
+  },
+  mounted() {
     const container = document.querySelector('.page-content')
     if (container) {
       container.addEventListener('scroll', this.onScroll)
@@ -60,10 +60,8 @@ export default {
     onScroll() {
       const container = document.querySelector('.page-content')
       if (!container) return
-
       const el = document.getElementById('bloglist')
       if (!el) return
-
       const rect = el.getBoundingClientRect()
       const containerRect = container.getBoundingClientRect()
       const top = rect.top - containerRect.top
@@ -73,19 +71,39 @@ export default {
         this.$emit('update-active-section', 'bloglist')
       }
     }
+  },
+  computed: {
+    backgroundStyle() {
+      return {
+        width: '100%',
+        minHeight: '100vh',
+        display: 'flex',
+        justifyContent: 'center',
+        padding: '60px 20px',
+        boxSizing: 'border-box',
+        backgroundImage: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(${this.bgImage})`,
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'center',
+        backgroundSize: 'cover'
+      }
+    }
   }
 }
 </script>
 
 <style scoped>
-.blog-list {
+.blog-content {
+  width: 100%;
   max-width: 800px;
-  margin: 40px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .blog-list h1 {
   text-align: center;
   margin-bottom: 20px;
+  color: #fff;
 }
 
 .blog-list a {

@@ -11,36 +11,25 @@
       <div class="sidebar">
         <img :src="photo" alt="Gary Wang" class="avatar" />
         <h1 class="name">Gary Wang</h1>
-        <p class="role">Student at Yungu High School</p>
-        <p class="interest">Web Dev | AI | CS Enthusiast</p>
-        <p class="interest">Football Team Captain</p>
+        <p class="role">{{ $t('home.sidebar.role') }}</p>
+        <p class="interest">{{ $t('home.sidebar.interest1') }}</p>
+        <p class="interest">{{ $t('home.sidebar.interest2') }}</p>
       </div>
 
       <div class="about-section">
         <div class="about-section-card">
-          <h2>About Me</h2>
+          <h2>{{ $t('home.aboutCard.title') }}</h2>
           <p>
-            I started with robotics in elementary school and later learned Scratch, C++, Python, and web development.
-            Outside tech, I love football, strategy games, and exploring social topics.
+            {{ $t('home.aboutCard.desc') }}
           </p>
-          <n-button type="primary" @click="scrollTo('about')">Learn More ↓</n-button>
+          <n-button type="primary" @click="scrollTo('about')">{{ $t('home.aboutCard.learnMore') }}</n-button>
         </div>
       </div>
     </section>
 
     <!-- 第二屏：About -->
     <section id="about" class="about-page">
-      <h1 class="page-title">About Me</h1>
-
-      <n-card class="about-card" v-if="about.tech">
-        <h2>{{ about.tech.title }}</h2>
-        <p>{{ about.tech.content }}</p>
-      </n-card>
-
-      <n-card class="about-card" v-if="about.nonTech">
-        <h2>{{ about.nonTech.title }}</h2>
-        <p>{{ about.nonTech.content }}</p>
-      </n-card>
+      <About />
     </section>
 
     <!-- 第三屏：Skills -->
@@ -71,12 +60,13 @@ import Skills from './Skills.vue'
 import Projects from './Projects.vue'
 import BlogList from './BlogList.vue'
 import Contact from './Contact.vue'
+import About from './About.vue'
 import GaryPhoto from '../assets/GaryPhoto.jpg'
 import BgImage from '../assets/background.jpg'
 
 export default {
   name: 'Home',
-  components: { NButton, Skills, Projects, BlogList, Contact, NCard },
+  components: { NButton, Skills, Projects, BlogList, Contact, About, NCard },
   data() {
     return {
       photo: GaryPhoto,
@@ -184,10 +174,14 @@ export default {
 
 /* About Page 第二屏 */
 .about-page {
+  display: flex;
   flex-direction: column;
-  padding: 60px;
-  gap: 40px;
+  height: 100vh; /* 保证父元素高度 */
+  padding: 0;    /* 去掉 padding，否则内容可能挤出屏幕 */
 }
+
+
+
 .page-title { font-size: 32px; font-weight: bold; text-align: center; margin-bottom: 20px; }
 .about-card {
   padding: 24px;

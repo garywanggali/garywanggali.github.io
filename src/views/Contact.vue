@@ -1,19 +1,19 @@
 <template>
-  <div class="contact-background" id="contact">
+  <div class="contact-background" :style="backgroundStyle" id="contact">
     <n-card class="contact-card" bordered>
-      <h1>Contact Me</h1>
-      <p>Feel free to reach out to me via the following channels:</p>
+      <h1>{{ $t('contact.title') }}</h1>
+      <p>{{ $t('contact.prompt') }}</p>
       <n-space vertical size="large">
         <div class="contact-item">
-          <strong>Google Email:</strong>
-          <a :href="'mailto:' + email">{{ GoogleEmail }}</a>
+          <strong>{{ $t('contact.google') }}:</strong>
+          <a :href="'mailto:' + GoogleEmail">{{ GoogleEmail }}</a>
         </div>
         <div class="contact-item">
-          <strong>QQ Email:</strong>
-          <a :href="'mailto:' + email">{{ QQEmail }}</a>
+          <strong>{{ $t('contact.qq') }}:</strong>
+          <a :href="'mailto:' + QQEmail">{{ QQEmail }}</a>
         </div>
         <div class="contact-item">
-          <strong>GitHub:</strong>
+          <strong>{{ $t('contact.github') }}:</strong>
           <a :href="github" target="_blank">{{ github }}</a>
         </div>
       </n-space>
@@ -23,6 +23,7 @@
 
 <script>
 import { NCard, NSpace } from 'naive-ui'
+import ContactBg from '../assets/contact.jpg' // 注意路径
 
 export default {
   name: 'Contact',
@@ -32,34 +33,22 @@ export default {
       GoogleEmail: 'garywang.gali@gmail.com',
       QQEmail: 'garywang.gali@qq.com',
       github: 'https://github.com/garywanggali',
+      bgImage: ContactBg
     }
   },
-  mounted() {
-    const container = document.querySelector('.page-content')
-    if (container) {
-      container.addEventListener('scroll', this.onScroll)
-      this.$nextTick(() => this.onScroll())
-    }
-  },
-  beforeUnmount() {
-    const container = document.querySelector('.page-content')
-    if (container) container.removeEventListener('scroll', this.onScroll)
-  },
-  methods: {
-    onScroll() {
-      const container = document.querySelector('.page-content')
-      if (!container) return
-
-      const el = document.getElementById('contact')
-      if (!el) return
-
-      const rect = el.getBoundingClientRect()
-      const containerRect = container.getBoundingClientRect()
-      const top = rect.top - containerRect.top
-      const bottom = rect.bottom - containerRect.top
-
-      if (top < container.clientHeight / 2 && bottom > container.clientHeight / 2) {
-        this.$emit('update-active-section', 'contact')
+  computed: {
+    backgroundStyle() {
+      return {
+        width: '100vw',
+        height: '100vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundImage: `linear-gradient(135deg, rgba(107,115,255,0.5) 0%, rgba(0,13,255,0.5) 100%), url(${this.bgImage})`,
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'center',
+        backgroundSize: 'cover',
+        overflow: 'hidden'
       }
     }
   }
@@ -67,46 +56,48 @@ export default {
 </script>
 
 <style scoped>
-.contact-background {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(135deg, #6b73ff 0%, #000dff 100%);
-  padding: 40px 20px;
-}
-
 .contact-card {
   max-width: 600px;
-  padding: 40px;
-  border-radius: 20px;
-  background-color: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  padding: 50px 40px;
+  border-radius: 24px;
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
   text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
 }
 
 .contact-card h1 {
   margin-bottom: 20px;
-  font-size: 32px;
+  font-size: 36px;
+  color: #1a1a1a;
 }
 
 .contact-card p {
-  margin-bottom: 30px;
+  margin-bottom: 40px;
   color: #333;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .contact-item {
   font-size: 18px;
+  margin-bottom: 12px;
 }
 
 .contact-item a {
-  color: #007bff;
+  color: #1a73e8;
   text-decoration: none;
   margin-left: 8px;
+  transition: color 0.2s;
 }
 
 .contact-item a:hover {
+  color: #0c47b7;
   text-decoration: underline;
 }
 </style>

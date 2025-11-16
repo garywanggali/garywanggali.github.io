@@ -1,8 +1,8 @@
 <template>
   <div class="skills-background">
     <n-card class="skills-card" bordered>
-      <h1>My Skills</h1>
-      <p>Here are some of the computer-related skills I have learned and practiced:</p>
+      <h1>{{ $t('skills.title') }}</h1>
+      <p>{{ $t('skills.desc') }}</p>
       
       <n-space vertical size="medium">
         <div v-for="skill in skills" :key="skill.name" class="skill-item">
@@ -55,13 +55,23 @@ export default {
 <style scoped>
 .skills-background {
   height: 100vh; /* 一屏高度 */
+  width: 100vw;  /* 占满整个屏幕宽度 */
   display: flex;
   justify-content: center;
   align-items: center; /* 垂直居中 */
-  background: linear-gradient(135deg, #6b73ff 0%, #000dff 100%);
+  
+  /* 背景图 + 渐变叠加 */
+  background-image: 
+    linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), /* 半透明黑色遮罩，让文字更清晰 */
+    url('../assets/skills.jpg'); /* 你的背景图片路径 */
+  background-size: cover;       /* 图片拉伸填满屏幕 */
+  background-position: center;  /* 图片居中 */
+  background-repeat: no-repeat;
+
   padding: 20px;
-  scroll-snap-align: start;
+  scroll-snap-align: start;     /* 保持 scroll-snap */
 }
+
 
 .skills-card {
   max-width: 600px;       /* 更紧凑 */

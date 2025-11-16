@@ -4,13 +4,19 @@
     <n-layout-header class="header">
       <div class="logo" @click="goPage('home')">Gary Wang</div>
 
-      <n-space align="center" :size="32" class="nav-buttons">
-        <n-button text :class="{ active: activeSection==='home' }" @click="goPage('home')">Home</n-button>
-        <n-button text :class="{ active: activeSection==='about' }" @click="goPage('about')">About</n-button>
-        <n-button text :class="{ active: activeSection==='skills' }" @click="goPage('skills')">Skills</n-button>
-        <n-button text :class="{ active: activeSection==='projects' }" @click="goPage('projects')">Projects</n-button>
-        <n-button text :class="{ active: activeSection==='bloglist' }" @click="goPage('bloglist')">Blog</n-button>
-        <n-button text :class="{ active: activeSection==='contact' }" @click="goPage('contact')">Contact</n-button>
+      <n-space align="center" size="large" class="nav-buttons">
+        <n-button text :class="{ active: activeSection==='home' }" @click="goPage('home')">{{ $t('nav.home') }}</n-button>
+        <n-button text :class="{ active: activeSection==='about' }" @click="goPage('about')">{{ $t('nav.about') }}</n-button>
+        <n-button text :class="{ active: activeSection==='skills' }" @click="goPage('skills')">{{ $t('nav.skills') }}</n-button>
+        <n-button text :class="{ active: activeSection==='projects' }" @click="goPage('projects')">{{ $t('nav.projects') }}</n-button>
+        <n-button text :class="{ active: activeSection==='bloglist' }" @click="goPage('bloglist')">{{ $t('nav.bloglist') }}</n-button>
+        <n-button text :class="{ active: activeSection==='contact' }" @click="goPage('contact')">{{ $t('nav.contact') }}</n-button>
+      </n-space>
+
+      <!-- 语言切换按钮 -->
+      <n-space align="center" size="small" class="lang-switch">
+        <n-button size="small" text @click="switchLang('zh')" :disabled="$i18n.locale==='zh'">中</n-button>
+        <n-button size="small" text @click="switchLang('en')" :disabled="$i18n.locale==='en'">EN</n-button>
       </n-space>
 
       <div class="social-icons">
@@ -27,18 +33,21 @@
     <!-- 移动端抽屉 -->
     <n-drawer v-model:show="menuOpen" placement="right">
       <n-space vertical :size="24">
-        <n-button text :class="{ active: activeSection==='home' }" @click="goPage('home')">Home</n-button>
-        <n-button text :class="{ active: activeSection==='about' }" @click="goPage('about')">About</n-button>
-        <n-button text :class="{ active: activeSection==='skills' }" @click="goPage('skills')">Skills</n-button>
-        <n-button text :class="{ active: activeSection==='projects' }" @click="goPage('projects')">Projects</n-button>
-        <n-button text :class="{ active: activeSection==='bloglist' }" @click="goPage('bloglist')">Blog</n-button>
-        <n-button text :class="{ active: activeSection==='contact' }" @click="goPage('contact')">Contact</n-button>
+        <n-button text :class="{ active: activeSection==='home' }" @click="goPage('home')">{{ $t('nav.home') }}</n-button>
+        <n-button text :class="{ active: activeSection==='about' }" @click="goPage('about')">{{ $t('nav.about') }}</n-button>
+        <n-button text :class="{ active: activeSection==='skills' }" @click="goPage('skills')">{{ $t('nav.skills') }}</n-button>
+        <n-button text :class="{ active: activeSection==='projects' }" @click="goPage('projects')">{{ $t('nav.projects') }}</n-button>
+        <n-button text :class="{ active: activeSection==='bloglist' }" @click="goPage('bloglist')">{{ $t('nav.bloglist') }}</n-button>
+        <n-button text :class="{ active: activeSection==='contact' }" @click="goPage('contact')">{{ $t('nav.contact') }}</n-button>
+        <n-space align="center" size="small" style="margin-top: 20px;">
+          <n-button size="small" text @click="switchLang('zh')" :disabled="$i18n.locale==='zh'">中</n-button>
+          <n-button size="small" text @click="switchLang('en')" :disabled="$i18n.locale==='en'">EN</n-button>
+        </n-space>
       </n-space>
     </n-drawer>
 
     <!-- 页面内容 -->
     <n-layout-content class="page-content" style="overflow-y: auto;">
-      <!-- 接收子页面事件（Home.vue / Projects.vue 等） -->
       <router-view @update-active-section="handleUpdateSection" />
     </n-layout-content>
   </n-layout>
@@ -47,6 +56,7 @@
 <script>
 import { NLayout, NLayoutHeader, NLayoutContent, NButton, NSpace, NDrawer } from 'naive-ui'
 import { LogoGithub, MenuOutline } from '@vicons/ionicons5'
+import { useI18n } from 'vue-i18n'
 
 export default {
   name: 'App',
@@ -57,8 +67,14 @@ export default {
       activeSection: 'home'
     }
   },
+  setup() {
+    const { locale } = useI18n()
+    const switchLang = (lang) => {
+      locale.value = lang
+    }
+    return { switchLang }
+  },
   methods: {
-    // 接收子页面（Home.vue / Projects.vue 等）滚动事件
     handleUpdateSection(sectionId) {
       this.activeSection = sectionId
     },
@@ -120,6 +136,8 @@ export default {
 
 .mobile-menu-btn{ display:none; color:#007bff; }
 .mobile-menu-btn:hover{ transform:scale(1.2); }
+
+.lang-switch .n-button{ font-weight:bold; }
 
 @media(max-width:768px){
   .nav-buttons{ display:none; }

@@ -1,6 +1,6 @@
 <template>
   <div class="blog-article">
-    <n-button text class="back-btn" @click="$router.back()">← Back</n-button>
+    <n-button text class="back-btn" @click="goBack()">{{ $t('blogArticle.back') }}</n-button>
     <n-card :title="articleTitle">
       <div v-html="htmlContent"></div>
     </n-card>
@@ -31,13 +31,12 @@ export default {
     }
   },
   async created() {
-    // 自动导入所有 blog*.md
     const modules = import.meta.glob('../data/blog*.md', { as: 'raw' })
     const targetPath = `../data/blog${this.id}.md`
 
     if (!modules[targetPath]) {
-      this.articleTitle = '404 - 未找到该文章'
-      this.htmlContent = '<p>文章不存在。</p>'
+      this.articleTitle = this.$t('blogArticle.notFoundTitle')
+      this.htmlContent = `<p>${this.$t('blogArticle.notFoundContent')}</p>`
       return
     }
 
@@ -54,7 +53,20 @@ export default {
 
     // 渲染 Markdown，支持 KaTeX 公式
     this.htmlContent = md.render(content)
+  },
+  methods: {
+  goBack() {
+    // 如果当前路由就是 Home
+    if (this.$route.name === 'Home') {
+      const el = document.getElementById('bloglist')
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    } else {
+      // 跳 Home 并加 hash
+      this.$router.push({ path: '/', hash: '#bloglist' })
+    }
   }
+}
+
 }
 </script>
 
