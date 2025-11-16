@@ -1,0 +1,22 @@
+{
+  "zh": {
+    "tech": {
+      "title": "技术经历",
+      "content": "我从小学开始接触机器人（EV3、WAX），培养了对编程和逻辑思维的兴趣。随后，我逐步学习了计算机科学的基础知识，从 Scratch 的图形化编程，到 C++、Python 的语法和算法实践，再到网页开发（HTML/CSS/JavaScript/Vue）和数据库管理（SQL/MySQL）。在校期间，我参与了多个项目，例如开发 AP 课程选课系统、个人网站、以及小型小游戏，实现了从需求分析、设计、编码到测试上线的完整流程。这些经历让我能够独立完成从小型程序到完整网页项目的开发，也让我理解了软件开发中从逻辑设计到实现、测试和迭代的全过程。我注重代码规范与可维护性，并乐于尝试新技术和工具。"
+    },
+    "nonTech": {
+      "title": "兴趣与价值观",
+      "content": "在技术之外，我热爱足球，不仅锻炼了团队协作能力，也让我学会在压力下保持冷静。我喜欢玩策略类游戏，如 Kards 和《钢铁雄心》，通过游戏培养逻辑分析和战略思考能力。我关注社会议题，思考社会结构与公平问题，并有马克思主义信仰，希望在日常学习和生活中保持独立思考和批判性分析的能力。此外，我热衷于阅读历史、科技与经济类书籍，这帮助我从不同角度理解世界。我也参与过学校组织的志愿活动和社会调研，培养了沟通能力与责任感。我相信持续学习和实践是个人成长的关键，乐于将兴趣、学术与社会实践结合，探索多元化的可能性。"
+    }
+  },
+  "en": {
+    "tech": {
+      "title": "Technical Experience",
+      "content": "I started with robotics (EV3, WAX) in elementary school, which sparked my interest in programming and logical thinking. Over time, I learned CS fundamentals: from Scratch visual programming to C++ and Python, then web development (HTML/CSS/JavaScript/Vue) and database management (SQL/MySQL). I contributed to several projects at school, such as an AP course registration system, my personal website, and small games—covering the full lifecycle from requirements, design, coding, testing to launch. These experiences taught me to build complete web projects independently and understand the software development process end-to-end. I value clean, maintainable code and enjoy exploring new tools and technologies."
+    },
+    "nonTech": {
+      "title": "Interests & Values",
+      "content": "Beyond tech, I love football—it strengthens teamwork and helps me stay calm under pressure. I enjoy strategy games like Kards and Hearts of Iron, which train analytical and strategic thinking. I care about social issues and fairness, and I try to keep independent and critical thinking in daily life. I also read history, technology and economics, which gives me diverse perspectives. I have participated in volunteering and social research at school, building communication skills and a sense of responsibility. I believe continuous learning and practice drive personal growth, and I like connecting interests, academics and social practice to explore possibilities."
+    }
+  }
+}

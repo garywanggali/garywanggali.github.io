@@ -1,0 +1,130 @@
+[
+  {
+    "id": 1,
+    "title": { "zh": "Flask AP 选课系统", "en": "Flask AP Registration System" },
+    "cover": "/images/projects/flask_ap.jpg",
+    "description": {
+      "zh": "一个用于 AP 课程选课的 Web 系统，基于 Flask 和 MySQL 构建，已在学校平台使用并获得师生好评。",
+      "en": "A web system for AP course registration built with Flask and MySQL. Now used in school's platforms with positive feedback from users."
+    },
+    "images": [
+      "/images/projects/flask_ap_1.jpg",
+      "/images/projects/flask_ap_2.jpg"
+    ],
+    "skills": ["Python", "Flask", "MySQL", "HTML/CSS", "JavaScript"]
+  },
+  {
+    "id": 2,
+    "title": { "zh": "在线麻将（金华规则）", "en": "Online Mahjong Game (Jinhua Rules)" },
+    "cover": "/images/projects/mahjong.jpg",
+    "description": {
+      "zh": "家乡的长辈常和我玩这款麻将，我担心它逐渐失去人气，因此尝试做一个在线版本。",
+      "en": "Elders in my hometown used to play this game with me. To preserve its popularity, I'm making an online version."
+    },
+    "skills": ["JavaScript", "WebSocket", "Canvas", "Node.js"]
+  },
+  {
+    "id": 3,
+    "title": { "zh": "像素鸟 2D", "en": "Flappy Bird-2D" },
+    "cover": "/images/projects/flappybird.jpg",
+    "description": {
+      "zh": "我用 Cocos 引擎开发的第一款游戏。基于现实物理模拟，控制小鸟穿越管道。",
+      "en": "My first game developed with the Cocos engine. Physics-based gameplay guiding a bird through pipes."
+    },
+    "skills": ["Cocos2d-js", "JavaScript", "Physics Simulation", "HTML5"]
+  },
+  {
+    "id": 4,
+    "title": { "zh": "地球 Online", "en": "Earth Online" },
+    "cover": "/images/projects/earthonline.jpg",
+    "description": {
+      "zh": "一款网页上的策略模拟游戏，目标是让玩家尽可能细致地管理国家。",
+      "en": "A web-based strategy simulation where players manage a country in detail."
+    },
+    "images": [
+      "/images/projects/earthonline_1.jpg",
+      "/images/projects/earthonline_2.jpg",
+      "/images/projects/earthonline_3.jpg"
+    ],
+    "skills": ["JavaScript", "Vue.js", "Web Architecture", "Game Design"]
+  },
+  {
+    "id": 5,
+    "title": { "zh": "可学习的俄罗斯", "en": "A Learnable Russia" },
+    "cover": "/images/projects/alr.jpg",
+    "description": {
+      "zh": "用于练习 Geoguessr/图寻技能的工具，帮助熟悉俄罗斯不同地区街景车天线状态并在地图上准确选择。",
+      "en": "A tool to practice Geoguessr/Tuxun skills. Learn antenna statuses in Russia regions and select accurately on the map."
+    },
+    "skills": ["JavaScript", "Map APIs", "Data Visualization", "Practice Tooling"]
+  },
+  {
+    "id": 6,
+    "title": { "zh": "家访规划系统", "en": "Home Visit Planner" },
+    "skills": ["Flask", "MySQL", "JavaScript", "HTML", "CSS", "Gaode Maps API", "Route Optimization", "Clustering", "AI-Assisted Development"],
+    "cover": "/images/projects/hvp.jpg",
+    "description": {
+      "zh": "用于帮助家庭与学校高效规划和管理家访的 Web 应用，支持地址解析、区域聚类、路径优化与可视化展示。",
+      "en": "A web-based application designed to help families and schools efficiently plan and manage home visits with geocoding, clustering, route optimization and visualization."
+    },
+    "sections": [
+      {
+        "title": { "zh": "项目起源", "en": "Origin" },
+        "time": "2023.5",
+        "content": {
+          "zh": "项目源于一次数学课的“最短路径”任务，同时老师分享了家访规划的痛点：手工标点和规划路线耗时且容易低效。我希望用编程解决真实问题，由此萌生了系统。",
+          "en": "The project started from a math task on shortest paths, and a teacher's real pain: manually marking addresses and planning routes was time-consuming and inefficient. I wanted to solve it with code, and the system idea was born."
+        }
+      },
+      {
+        "title": { "zh": "项目动机", "en": "Motivation" },
+        "time": "2023.7",
+        "content": {
+          "zh": "随着学校规模扩大、家访增多，仅靠手工难以兼顾距离、分工、交通与集中度等因素。我希望做一个能落地的工具，让老师把时间投入到陪伴与交流上。",
+          "en": "With growing school scale and more visits, manual planning can't balance distance, workload, traffic and clustering. I aimed to build a practical tool so teachers can focus on students and families."
+        }
+      },
+      {
+        "title": { "zh": "开发过程", "en": "Development" },
+        "time": "2023.8-2024.3",
+        "content": {
+          "zh": "学习使用高德地图 API 获取地址经纬度，编写聚类算法按区域分组，结合路径优化减少往返；大量使用 AI 辅助查阅与调试，最终完成 CSV 输入、自动计算与可视化呈现。",
+          "en": "Used Gaode Maps API for geocoding, implemented clustering to group nearby addresses, and route optimization to reduce travel; leveraged AI for docs and debugging; achieved CSV input, auto-compute and visualization."
+        }
+      },
+      {
+        "title": { "zh": "技术实现", "en": "Technical Implementation" },
+        "time": "2024.4",
+        "content": {
+          "zh": "后端采用 Flask + MySQL，前端原生 HTML/JS 结合高德地图 JS SDK。核心流程：地址转经纬度 → 数据库写入 → 区域聚类 → 路径排序 → 地图呈现，并部署在云端供老师使用。",
+          "en": "Backend: Flask + MySQL; Frontend: HTML/JS with Gaode Maps JS SDK. Flow: geocoding → DB write → clustering → route ordering → map display; deployed in the cloud for teachers."
+        }
+      },
+      {
+        "type": "extra",
+        "title": { "zh": "老师与 AI 支持", "en": "Teacher and AI Support" },
+        "content": {
+          "zh": "老师指导我搭建仓库、撰写文档与日志、管理协作；AI 提供文档链接、调试与优化建议，并协助算法调参和问题定位，提升了迭代效率。",
+          "en": "A teacher guided repo setup, documentation and collaboration; AI helped with docs, debugging, optimization, and algorithm tuning—speeding up iteration."
+        }
+      },
+      {
+        "type": "extra",
+        "time": "",
+        "title": { "zh": "时间管理", "en": "Time Management" },
+        "content": {
+          "zh": "工程周期长且需持续优化，期间与学业多次冲突。我学习了优先级管理，将关键模块集中攻克，并通过沟通与规划在学业与项目间取得平衡。",
+          "en": "The long development required continuous optimization and clashed with academics. I learned prioritization, focused on key modules, and balanced studies and project through planning and communication."
+        }
+      }
+    ],
+    "images": [
+      "/images/projects/hvp_1.jpg",
+      "/images/projects/hvp_2.jpg",
+      "/images/projects/hvp_3.jpg",
+      "/images/projects/hvp_4.jpg"
+    ],
+    "video": "/videos/hvp.mp4",
+    "link": "http://projects.yungu.org/homevisitplanner/"
+  }
+]
