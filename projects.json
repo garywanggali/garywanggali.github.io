@@ -22,6 +22,7 @@
       "zh": "家乡的长辈常和我玩这款麻将，我担心它逐渐失去人气，因此尝试做一个在线版本。",
       "en": "Elders in my hometown used to play this game with me. To preserve its popularity, I'm making an online version."
     },
+    "sections": [],
     "skills": ["JavaScript", "WebSocket", "Canvas", "Node.js"]
   },
   {
