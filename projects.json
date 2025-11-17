@@ -33,6 +33,7 @@
       "zh": "我用 Cocos 引擎开发的第一款游戏。基于现实物理模拟，控制小鸟穿越管道。",
       "en": "My first game developed with the Cocos engine. Physics-based gameplay guiding a bird through pipes."
     },
+    "sections": [],
     "skills": ["Cocos2d-js", "JavaScript", "Physics Simulation", "HTML5"]
   },
   {
@@ -48,6 +49,7 @@
       "/images/projects/earthonline_2.jpg",
       "/images/projects/earthonline_3.jpg"
     ],
+    "sections": [],
     "skills": ["JavaScript", "Vue.js", "Web Architecture", "Game Design"]
   },
   {
